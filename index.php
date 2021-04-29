@@ -26,9 +26,16 @@ if (isset($_POST['submit'])) {
             $result = updateStudent($id, $fname, $lname, $roll);
 
             if ($result) {
-                header('location: ./index.php?task=report');
+                echo "<script>
+                alert('Update Student >> Successful!');
+                window.location = './index.php?task=report';
+                </script>";
             } else {
                 $error = 1;
+                echo "<script>
+                alert('Update Student >> Failed!');
+                window.location = './index.php?task=report';
+                </script>";
             }
         }
     } else {
@@ -37,9 +44,16 @@ if (isset($_POST['submit'])) {
             $result = addStudent($fname, $lname, $roll);
             
             if ($result) {
-                header('location: ./index.php?task=report');
+                echo "<script>
+                alert('Add Student >> Successful!');
+                window.location = './index.php?task=report';
+                </script>";
             } else {
                 $error = 1;
+                echo "<script>
+                alert('Add Student >> Failed!');
+                window.location = './index.php?task=report';
+                </script>";
             }
         }
     }
@@ -68,7 +82,7 @@ if (isset($_POST['submit'])) {
             <div class="column column-60 column-offset-20">
                 <h2>Project 2 - CRUD</h2>
                 <p>A sample project to perform CRUD operations using plain files and PHP</p>
-                <?php include_once( 'inc/templates/nav.php' ); ?>
+                <?php include_once('inc/templates/nav.php'); ?>
                 <hr/>
                 <?php
                 if ($info != '') {
