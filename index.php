@@ -34,7 +34,8 @@ if (isset($_POST['submit'])) {
                 $error = 1;
                 echo "<script>
                 alert('Update Student >> Failed!');
-                window.location = './index.php?task=report';
+                window.location = './index.php?task=add';
+                window.history.back();
                 </script>";
             }
         }
@@ -52,7 +53,8 @@ if (isset($_POST['submit'])) {
                 $error = 1;
                 echo "<script>
                 alert('Add Student >> Failed!');
-                window.location = './index.php?task=report';
+                window.location = './index.php?task=add';
+                window.history.back();
                 </script>";
             }
         }
