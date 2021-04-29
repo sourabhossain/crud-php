@@ -33,8 +33,8 @@ if (isset($_POST['submit'])) {
             } else {
                 $error = 1;
                 echo "<script>
-                alert('Update Student >> Failed!');
-                window.location = './index.php?task=add';
+                alert('Add Student >> Failed!');
+                window.location = './index.php?task=add&message=duplicate';
                 window.history.back();
                 </script>";
             }
@@ -53,13 +53,25 @@ if (isset($_POST['submit'])) {
                 $error = 1;
                 echo "<script>
                 alert('Add Student >> Failed!');
-                window.location = './index.php?task=add';
+                window.location = './index.php?task=add&message=duplicate';
                 window.history.back();
                 </script>";
             }
         }
     }
 
+}
+
+if ('delete' == $task) {
+	$id = filter_input( INPUT_GET, 'id', FILTER_SANITIZE_STRING );
+	
+    if ($id > 0) {
+	    deleteStudent($id);
+        echo "<script>
+        alert('Delete Student >> Successful!');
+        window.location = './index.php?task=report';
+        </script>";
+    }
 }
 ?>
 
@@ -98,6 +110,16 @@ if (isset($_POST['submit'])) {
         <div class="row">
             <div class="column column-60 column-offset-20">
                 <?php generateReport(); ?>
+            </div>
+        </div>
+        <?php endif; ?>
+
+        <?php if (!empty($_GET['message']) && 'duplicate' == $_GET['message']): ?>
+        <div class="row">
+            <div class="column column-60 column-offset-20">
+                <blockquote>
+                    Duplicate Roll Number
+                </blockquote>
             </div>
         </div>
         <?php endif; ?>
@@ -144,5 +166,7 @@ if (isset($_POST['submit'])) {
         endif;
         ?>
     </div>
+
+    <script type="text/javascript" src="assets/js/script.js"></script>
 </body>
 </html>
