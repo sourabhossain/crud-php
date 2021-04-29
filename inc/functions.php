@@ -1,5 +1,6 @@
 <?php
-define( 'DB_NAME', '/opt/lampp/htdocs/crud-php/data/db.txt' );
+define('DB_NAME', '/opt/lampp/htdocs/crud-php/data/db.txt');
+
 function seed() {
     $data           = array(
         array(
@@ -33,20 +34,23 @@ function seed() {
             'roll'  => '7'
         ),
     );
-    $serializedData = serialize( $data );
-    file_put_contents( DB_NAME, $serializedData, LOCK_EX );
+
+    $serializedData = serialize($data);
+    file_put_contents(DB_NAME, $serializedData, LOCK_EX);
 }
 
 function generateReport() {
-    $serialziedData = file_get_contents( DB_NAME );
-    $students       = unserialize( $serialziedData );
-    ?>
+    $serialziedData = file_get_contents(DB_NAME);
+    $students       = unserialize($serialziedData);
+?>
+
     <table>
         <tr>
             <th>Name</th>
             <th>Roll</th>
             <th width="25%">Action</th>
         </tr>
+        
         <?php
         foreach ( $students as $student ) {
         ?>
@@ -61,5 +65,74 @@ function generateReport() {
 
     </table>    
 <?php
+}
+
+function addStudent($fname, $lname, $roll) {
+    $found          = false;
+    $serialziedData = file_get_contents(DB_NAME);
+    $students       = unserialize($serialziedData);
+
+    foreach ($students as $_student) {
+        if ($_student['roll'] == $roll) {
+            $found = true;
+            break;
+        }
+    }
+
+    if (!$found) {
+        $newId   = count( $students ) + 1;
+        $student = array(
+            'id'    => $newId,
+            'fname' => $fname,
+            'lname' => $lname,
+            'roll'  => $roll
+        );
+
+        array_push($students, $student);
+        $serializedData = serialize($students);
+        file_put_contents(DB_NAME, $serializedData, LOCK_EX );
+
+        return true;
+    }
+
+    return false;
+}
+
+function getStudent($id) {
+    $serialziedData = file_get_contents(DB_NAME);
+    $students       = unserialize( $serialziedData );
+    
+    foreach ($students as $student) {
+        if ($student['id'] == $id) {
+            return $student;
+        }
+    }
+
+    return false;
+}
+
+function updateStudent($id, $fname, $lname, $roll) {
+    $found          = false;
+    $serialziedData = file_get_contents( DB_NAME );
+    $students       = unserialize( $serialziedData );
+
+    foreach ($students as $_student) {
+        if ($_student['roll'] == $roll && $_student['id'] != $id) {
+            $found = true;
+            break;
+        }
+    }
+
+    if (!$found) {
+        $students[ $id - 1 ]['fname'] = $fname;
+        $students[ $id - 1 ]['lname'] = $lname;
+        $students[ $id - 1 ]['roll']  = $roll;
+        $serializedData               = serialize($students);
+        file_put_contents(DB_NAME, $serializedData, LOCK_EX);
+
+        return true;
+    }
+
+    return false;
 }
 ?>
