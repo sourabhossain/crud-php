@@ -50,14 +50,14 @@ function generateReport() {
             <th>Roll</th>
             <th width="25%">Action</th>
         </tr>
-        
+
         <?php
-        foreach ( $students as $student ) {
+        foreach ($students as $student) {
         ?>
             <tr>
-                <td><?php printf( '%s %s', $student['fname'], $student['lname'] ); ?></td>
-                <td><?php printf( '%s', $student['roll'] ); ?></td>
-                <td><?php printf( '<a href="./index.php?task=edit&id=%s">Edit</a> | <a href="./index.php?task=delete&id=%s">Delete</a>',$student['id'],$student['id'] ); ?></td>
+                <td><?php printf('%s %s', $student['fname'], $student['lname']); ?></td>
+                <td><?php printf('%s', $student['roll']); ?></td>
+                <td><?php printf('<a href="./index.php?task=edit&id=%s">Edit</a> | <a href="./index.php?task=delete&id=%s">Delete</a>', $student['id'], $student['id']); ?></td>
             </tr>
         <?php
         }
@@ -124,10 +124,10 @@ function updateStudent($id, $fname, $lname, $roll) {
     }
 
     if (!$found) {
-        $students[ $id - 1 ]['fname'] = $fname;
-        $students[ $id - 1 ]['lname'] = $lname;
-        $students[ $id - 1 ]['roll']  = $roll;
-        $serializedData               = serialize($students);
+        $students[$id - 1 ]['fname'] = $fname;
+        $students[$id - 1 ]['lname'] = $lname;
+        $students[$id - 1 ]['roll']  = $roll;
+        $serializedData              = serialize($students);
         file_put_contents(DB_NAME, $serializedData, LOCK_EX);
 
         return true;
