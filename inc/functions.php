@@ -169,11 +169,11 @@ function getNewId($students) {
 }
 
 function isAdmin() {
-	return ('admin' == $_SESSION['role']);
+	return (isset($_SESSION['role']) && 'admin' == $_SESSION['role']);
 }
 
 function isEditor() {
-	return ('editor' == $_SESSION['role']);
+	return (isset($_SESSION['role']) && 'editor' == $_SESSION['role']);
 }
 
 function hasPrivilege() {

@@ -14,9 +14,9 @@
             <?php endif; ?>
         </p>
     </div>
-
+    
     <div class="float-right">
-        <?php if (!$_SESSION['loggedin']): ?>
+        <?php if (empty($_SESSION['loggedin'])): ?>
         <a href="./auth.php">Log In</a>
         <?php else: ?>
         <a href="./auth.php?logout=true">Log Out (

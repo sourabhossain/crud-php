@@ -65,7 +65,7 @@ if (isset($_GET['logout'])) {
             <div class="column column-60 column-offset-20">
                 <?php
                 //echo sha1("rabbit")."<br/>";
-                if (true == $_SESSION['loggedin']) {
+                if (!empty($_SESSION['loggedin']) && true == $_SESSION['loggedin']) {
                     echo "Hello Admin, Welcome!";
                 } else {
                     echo "Hello Stranger, Login Below";
@@ -81,7 +81,7 @@ if (isset($_GET['logout'])) {
                     echo "<blockquote>Username and Password didn't match</blockquote>";
                 }
 
-                if (false == $_SESSION['loggedin']):
+                if (empty($_SESSION['loggedin'])):
                 ?>
                     <form method="POST">
                         <label for=username>Username</label>
