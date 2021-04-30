@@ -48,7 +48,9 @@ function generateReport() {
         <tr>
             <th>Name</th>
             <th>Roll</th>
+            <?php if ( isAdmin() || isEditor() ): ?>
             <th width="25%">Action</th>
+            <?php endif; ?>
         </tr>
 
         <?php
@@ -57,7 +59,11 @@ function generateReport() {
             <tr>
                 <td><?php printf('%s %s', $student['fname'], $student['lname']); ?></td>
                 <td><?php printf('%s', $student['roll']); ?></td>
-                <td><?php printf('<a href="./index.php?task=edit&id=%s">Edit</a> | <a href="./index.php?task=delete&id=%s">Delete</a>', $student['id'], $student['id']); ?></td>
+                <?php if (isAdmin()): ?>
+                <td><?php printf('<a href="./index.php?task=edit&id=%s">Edit</a> | <a class="delete" href="./index.php?task=delete&id=%s">Delete</a>', $student['id'], $student['id']); ?></td>
+				<?php elseif (isEditor()): ?>
+                <td><?php printf('<a href="./index.php?task=edit&id=%s">Edit</a>', $student['id']); ?></td>
+				<?php endif; ?>
             </tr>
         <?php
         }
@@ -80,7 +86,7 @@ function addStudent($fname, $lname, $roll) {
     }
 
     if (!$found) {
-        $newId   = count( $students ) + 1;
+        $newId   = getNewId($students);
         $student = array(
             'id'    => $newId,
             'fname' => $fname,
@@ -160,5 +166,17 @@ function printRaw() {
 function getNewId($students) {
     $maxId = max(array_column($students,'id'));
     return $maxId+1;
+}
+
+function isAdmin() {
+	return ('admin' == $_SESSION['role']);
+}
+
+function isEditor() {
+	return ('editor' == $_SESSION['role']);
+}
+
+function hasPrivilege() {
+    return (isAdmin() || isEditor());
 }
 ?>

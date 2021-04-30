@@ -1,11 +1,23 @@
 <?php
+session_start();
 require_once "inc/functions.php";
 
 $info  = '';
 $task  = $_GET['task'] ?? 'report';
 $error = $_GET['error'] ?? '0';
 
+if ('edit' == $task) {
+    if (!hasPrivilege()) {
+        header('location: ./index.php?task=report');
+    }
+}
+
 if ('seed' == $task) {
+    if (!isAdmin()) {
+		header('location: ./index.php?task=report');
+		return;
+	}
+
     seed();
     $info = "Seeding is complete";
 }
@@ -63,7 +75,12 @@ if (isset($_POST['submit'])) {
 }
 
 if ('delete' == $task) {
-	$id = filter_input( INPUT_GET, 'id', FILTER_SANITIZE_STRING );
+    if (!isAdmin()) {
+	    header('location: ./index.php?task=report');
+	    return;
+    }
+
+	$id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_STRING);
 	
     if ($id > 0) {
 	    deleteStudent($id);
@@ -94,7 +111,7 @@ if ('delete' == $task) {
     <div class="container">
         <div class="row">
             <div class="column column-60 column-offset-20">
-                <h2>Project 2 - CRUD</h2>
+                <h2>CRUD Project</h2>
                 <p>A sample project to perform CRUD operations using plain files and PHP</p>
                 <?php include_once('inc/templates/nav.php'); ?>
                 <hr/>
